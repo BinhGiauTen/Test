@@ -3,17 +3,25 @@ package GUI;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Button;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.Box;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.awt.event.ActionEvent;
@@ -28,7 +36,16 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.JComboBox;
 import com.toedter.calendar.JDateChooser;
 
-public class pnlHoadon extends JPanel {
+import dao.Dao_KhuyenMai;
+import dao.Dao_NhaCungCap;
+import entity.KhachHang;
+import entity.KhuyenMai;
+import entity.NhaCungCap;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+public class pnlHoadon extends JPanel implements ActionListener,DocumentListener {
 	private JTextField txtMaSP;
 	private JTextField txtTenSP;
 	private JTextField txtGiaBan;
@@ -58,7 +75,35 @@ public class pnlHoadon extends JPanel {
 	private JTextField txtMaHD_N;
 	private JTextField txtMaNV_N;
 	private JTextField txtTenNV_N;
-	private JTextField textField_13;
+	private JTextField txtTongTien_N;
+	private JDateChooser dcrNgayLap;
+	private JDateChooser dcrNgayBDKM;
+	private JDateChooser dcrNgayKTKM;
+	
+	
+	private NhaCungCap ncc;
+	private KhuyenMai khuyenMai;
+	private KhachHang khachHang;
+	
+	private Dao_NhaCungCap dao_NCC;
+	private Dao_KhuyenMai dao_KhuyenMai;
+	private JButton btnXoaSP;
+	private JButton btnThemSP;
+	private JButton btnSuaSP;
+	private JButton btnTimSP;
+	private JButton btnTimKhachHang;
+	private JButton btnTimKhuyenMai;
+	private JButton btnThanhToan;
+	private JButton btnTamIn;
+	private JButton btnTaoMoi;
+	private JButton btnLayInTam;
+	private JButton btnXoaSP_N;
+	private JButton btnThemSP_N;
+	private JButton btnSuaSP_N;
+	private JButton btnTimSP_N;
+	private JButton btnTimNCC;
+	private JButton btnThanhToan_N;
+	private JButton btnTaoMoi_N;
 
 	/**
 	 * Create the panel.
@@ -68,6 +113,20 @@ public class pnlHoadon extends JPanel {
 		setForeground(Color.BLACK);
 		setBounds(0,0, 1163, 763);
 		setLayout(null);
+		
+		
+		
+		try {
+			connectDB.ConnectDB.getInstance().connect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		ncc = new NhaCungCap();
+		khuyenMai = new KhuyenMai();
+		
+		dao_NCC = new Dao_NhaCungCap();
+		dao_KhuyenMai = new Dao_KhuyenMai();
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 1163, 763);
@@ -84,7 +143,7 @@ public class pnlHoadon extends JPanel {
 		
 		txtMaSP = new JTextField();
 		txtMaSP.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtMaSP.setBounds(120, 20, 250, 20);
+		txtMaSP.setBounds(120, 20, 170, 20);
 		pnlHDBan.add(txtMaSP);
 		txtMaSP.setColumns(10);
 		
@@ -129,15 +188,25 @@ public class pnlHoadon extends JPanel {
 		pnlBorderSP.add(lblSoLuong);
 		lblSoLuong.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		JButton btnXoaSP = new JButton("Xóa sản phẩm");
-		btnXoaSP.setBounds(510, 75, 250, 40);
+		btnXoaSP = new JButton("Xóa sản phẩm");
+		btnXoaSP.setBounds(560, 70, 200, 50);
 		pnlBorderSP.add(btnXoaSP);
 		btnXoaSP.setFont(new Font("Tahoma", Font.BOLD, 13));
 		
-		JButton btnThemSP = new JButton("Thêm sản phẩm");
-		btnThemSP.setBounds(240, 75, 250, 40);
+		btnThemSP = new JButton("Thêm sản phẩm");
+		btnThemSP.setBounds(80, 70, 200, 50);
 		pnlBorderSP.add(btnThemSP);
 		btnThemSP.setFont(new Font("Tahoma", Font.BOLD, 13));
+		
+		btnSuaSP = new JButton("Sửa sản phẩm");
+		btnSuaSP.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnSuaSP.setBounds(320, 70, 200, 50);
+		pnlBorderSP.add(btnSuaSP);
+		
+		btnTimSP = new JButton("Tìm");
+		btnTimSP.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnTimSP.setBounds(290, 20, 80, 20);
+		pnlBorderSP.add(btnTimSP);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -175,7 +244,7 @@ public class pnlHoadon extends JPanel {
 		txtSDTKhachHang = new JTextField();
 		txtSDTKhachHang.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtSDTKhachHang.setColumns(10);
-		txtSDTKhachHang.setBounds(120, 20, 250, 20);
+		txtSDTKhachHang.setBounds(120, 20, 170, 20);
 		pnlKhachHang.add(txtSDTKhachHang);
 		
 		JLabel lblMaKH = new JLabel("Mã khách hàng");
@@ -213,6 +282,11 @@ public class pnlHoadon extends JPanel {
 		lblDiaChi.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblDiaChi.setBounds(10, 110, 100, 20);
 		pnlKhachHang.add(lblDiaChi);
+		
+		btnTimKhachHang = new JButton("Tìm");
+		btnTimKhachHang.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnTimKhachHang.setBounds(290, 20, 80, 20);
+		pnlKhachHang.add(btnTimKhachHang);
 		
 		JPanel pnlHoaDon = new JPanel();
 		pnlHoaDon.setLayout(null);
@@ -261,7 +335,7 @@ public class pnlHoadon extends JPanel {
 		lblTenNV.setBounds(10, 110, 100, 20);
 		pnlHoaDon.add(lblTenNV);
 		
-		JDateChooser dcrNgayLap = new JDateChooser();
+		dcrNgayLap = new JDateChooser();
 		dcrNgayLap.setBounds(120, 50, 250, 20);
 		
 		dcrNgayLap.setLocale(new Locale("vi", "VN"));
@@ -285,7 +359,7 @@ public class pnlHoadon extends JPanel {
 		txtMaKM = new JTextField();
 		txtMaKM.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtMaKM.setColumns(10);
-		txtMaKM.setBounds(120, 20, 250, 20);
+		txtMaKM.setBounds(120, 20, 170, 20);
 		pnlTTKhuyenMai.add(txtMaKM);
 		
 		JLabel lblNgayBDKM = new JLabel("Ngày bắt đầu");
@@ -305,7 +379,7 @@ public class pnlHoadon extends JPanel {
 		lblGiaTriGG.setBounds(10, 110, 100, 20);
 		pnlTTKhuyenMai.add(lblGiaTriGG);
 		
-		JDateChooser dcrNgayBDKM = new JDateChooser();
+		dcrNgayBDKM = new JDateChooser();
 		dcrNgayBDKM.setLocale(new Locale("vi", "VN"));
 		dcrNgayBDKM.setEnabled(false);
 		dcrNgayBDKM.setDateFormatString("dd/MM/yyyy");
@@ -317,12 +391,17 @@ public class pnlHoadon extends JPanel {
 		lblNgayKTKM.setBounds(10, 80, 112, 20);
 		pnlTTKhuyenMai.add(lblNgayKTKM);
 		
-		JDateChooser dcrNgayKTKM = new JDateChooser();
+		dcrNgayKTKM = new JDateChooser();
 		dcrNgayKTKM.setLocale(new Locale("vi", "VN"));
 		dcrNgayKTKM.setEnabled(false);
 		dcrNgayKTKM.setDateFormatString("dd/MM/yyyy");
 		dcrNgayKTKM.setBounds(120, 80, 250, 20);
 		pnlTTKhuyenMai.add(dcrNgayKTKM);
+		
+		btnTimKhuyenMai = new JButton("Tìm");
+		btnTimKhuyenMai.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnTimKhuyenMai.setBounds(290, 20, 80, 20);
+		pnlTTKhuyenMai.add(btnTimKhuyenMai);
 		
 		JPanel pnlThanhToan = new JPanel();
 		pnlThanhToan.setLayout(null);
@@ -365,12 +444,12 @@ public class pnlHoadon extends JPanel {
 		txtTienThua.setBounds(510, 28, 250, 30);
 		pnlThanhToan.add(txtTienThua);
 		
-		JButton btnThanhToan = new JButton("Thanh toán");
+		btnThanhToan = new JButton("Thanh toán");
 		btnThanhToan.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnThanhToan.setBounds(810, 490, 300, 50);
 		pnlHDBan.add(btnThanhToan);
 		
-		JButton btnTamIn = new JButton("In tạm hóa đơn");
+		btnTamIn = new JButton("In tạm hóa đơn");
 		btnTamIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -379,12 +458,12 @@ public class pnlHoadon extends JPanel {
 		btnTamIn.setBounds(810, 550, 300, 50);
 		pnlHDBan.add(btnTamIn);
 		
-		JButton btnXoaTrang = new JButton("Xóa trắng");
-		btnXoaTrang.setFont(new Font("Tahoma", Font.BOLD, 17));
-		btnXoaTrang.setBounds(810, 670, 300, 50);
-		pnlHDBan.add(btnXoaTrang);
+		btnTaoMoi = new JButton("Tạo mới");
+		btnTaoMoi.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btnTaoMoi.setBounds(810, 670, 300, 50);
+		pnlHDBan.add(btnTaoMoi);
 		
-		JButton btnLayInTam = new JButton("Hóa đơn in tạm");
+		btnLayInTam = new JButton("Hóa đơn in tạm");
 		btnLayInTam.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btnLayInTam.setBounds(810, 610, 300, 50);
 		pnlHDBan.add(btnLayInTam);
@@ -401,7 +480,7 @@ public class pnlHoadon extends JPanel {
 		txtMaSP_N = new JTextField();
 		txtMaSP_N.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtMaSP_N.setColumns(10);
-		txtMaSP_N.setBounds(120, 20, 250, 20);
+		txtMaSP_N.setBounds(120, 20, 170, 20);
 		pnlHDNhap.add(txtMaSP_N);
 		
 		JLabel lblTenSP_N = new JLabel("Tên sản phẩm");
@@ -445,15 +524,25 @@ public class pnlHoadon extends JPanel {
 		lblSoLuong_N.setBounds(390, 45, 100, 20);
 		pnlBorderSP_N.add(lblSoLuong_N);
 		
-		JButton btnXoaSP_N = new JButton("Xóa sản phẩm");
+		btnXoaSP_N = new JButton("Xóa sản phẩm");
 		btnXoaSP_N.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnXoaSP_N.setBounds(510, 75, 250, 40);
+		btnXoaSP_N.setBounds(560, 70, 200, 50);
 		pnlBorderSP_N.add(btnXoaSP_N);
 		
-		JButton btnThemSP_N = new JButton("Thêm sản phẩm");
+		btnThemSP_N = new JButton("Thêm sản phẩm");
 		btnThemSP_N.setFont(new Font("Tahoma", Font.BOLD, 13));
-		btnThemSP_N.setBounds(240, 75, 250, 40);
+		btnThemSP_N.setBounds(80, 70, 200, 50);
 		pnlBorderSP_N.add(btnThemSP_N);
+		
+		btnSuaSP_N = new JButton("Sửa sản phẩm");
+		btnSuaSP_N.setFont(new Font("Tahoma", Font.BOLD, 13));
+		btnSuaSP_N.setBounds(320, 70, 200, 50);
+		pnlBorderSP_N.add(btnSuaSP_N);
+		
+		btnTimSP_N = new JButton("Tìm");
+		btnTimSP_N.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnTimSP_N.setBounds(290, 20, 80, 20);
+		pnlBorderSP_N.add(btnTimSP_N);
 		
 		JScrollPane scrollPane_N = new JScrollPane();
 		scrollPane_N.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
@@ -490,7 +579,7 @@ public class pnlHoadon extends JPanel {
 		txtSDTNCC = new JTextField();
 		txtSDTNCC.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		txtSDTNCC.setColumns(10);
-		txtSDTNCC.setBounds(120, 20, 250, 20);
+		txtSDTNCC.setBounds(120, 20, 170, 20);
 		pnlNCC.add(txtSDTNCC);
 		
 		JLabel lblMaNCC = new JLabel("Mã nhà cung cấp");
@@ -528,6 +617,11 @@ public class pnlHoadon extends JPanel {
 		lblDiaChiNCC.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblDiaChiNCC.setBounds(10, 110, 100, 20);
 		pnlNCC.add(lblDiaChiNCC);
+		
+		btnTimNCC = new JButton("Tìm");
+		btnTimNCC.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnTimNCC.setBounds(290, 20, 80, 20);
+		pnlNCC.add(btnTimNCC);
 		
 		JPanel pnlHoaDon_N = new JPanel();
 		pnlHoaDon_N.setLayout(null);
@@ -586,36 +680,156 @@ public class pnlHoadon extends JPanel {
 		
 		pnlHoaDon.add(dcrNgayLap);
 		
-		JPanel pnlThanhToan_1 = new JPanel();
-		pnlThanhToan_1.setLayout(null);
-		pnlThanhToan_1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Th\u00F4ng tin thanh to\u00E1n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		pnlThanhToan_1.setBounds(390, 590, 380, 136);
-		pnlHDNhap.add(pnlThanhToan_1);
+		JPanel pnlThanhToan_N = new JPanel();
+		pnlThanhToan_N.setLayout(null);
+		pnlThanhToan_N.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Th\u00F4ng tin thanh to\u00E1n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		pnlThanhToan_N.setBounds(390, 590, 380, 136);
+		pnlHDNhap.add(pnlThanhToan_N);
 		
 		JLabel lblTongTien_N = new JLabel("Tổng tiền");
 		lblTongTien_N.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblTongTien_N.setBounds(10, 30, 130, 30);
-		pnlThanhToan_1.add(lblTongTien_N);
+		pnlThanhToan_N.add(lblTongTien_N);
 		
-		textField_13 = new JTextField();
-		textField_13.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		textField_13.setEnabled(false);
-		textField_13.setColumns(10);
-		textField_13.setBounds(130, 30, 240, 30);
-		pnlThanhToan_1.add(textField_13);
+		txtTongTien_N = new JTextField();
+		txtTongTien_N.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtTongTien_N.setEnabled(false);
+		txtTongTien_N.setColumns(10);
+		txtTongTien_N.setBounds(130, 30, 240, 30);
+		pnlThanhToan_N.add(txtTongTien_N);
 		
-		JButton btnThanhToan_1 = new JButton("Thanh toán");
-		btnThanhToan_1.setFont(new Font("Tahoma", Font.BOLD, 17));
-		btnThanhToan_1.setBounds(810, 590, 300, 60);
-		pnlHDNhap.add(btnThanhToan_1);
+		btnThanhToan_N = new JButton("Thanh toán");
+		btnThanhToan_N.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btnThanhToan_N.setBounds(810, 590, 300, 60);
+		pnlHDNhap.add(btnThanhToan_N);
 		
-		JButton btnXoaTrang_1_1 = new JButton("Xóa trắng");
-		btnXoaTrang_1_1.setFont(new Font("Tahoma", Font.BOLD, 17));
-		btnXoaTrang_1_1.setBounds(810, 660, 300, 60);
-		pnlHDNhap.add(btnXoaTrang_1_1);
-		btnXoaSP.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnTaoMoi_N = new JButton("Tạo mới");
+		btnTaoMoi_N.setFont(new Font("Tahoma", Font.BOLD, 17));
+		btnTaoMoi_N.setBounds(810, 660, 300, 60);
+		pnlHDNhap.add(btnTaoMoi_N);
+		
+		// add icon vao btn
+		btnThemSP.setIcon(new ImageIcon("img/add_32.png"));
+		btnSuaSP.setIcon(new ImageIcon("img/update2.png"));
+		btnXoaSP.setIcon(new ImageIcon("img/delete.png"));
+		btnThemSP_N.setIcon(new ImageIcon("img/add_32.png"));
+		btnSuaSP_N.setIcon(new ImageIcon("img/update2.png"));
+		btnXoaSP_N.setIcon(new ImageIcon("img/delete.png"));
+		btnTaoMoi.setIcon(new ImageIcon("img/update.png"));
+		btnTaoMoi_N.setIcon(new ImageIcon("img/update.png"));
+		btnThanhToan.setIcon(new ImageIcon("img/thanhToan.png"));
+		btnThanhToan_N.setIcon(new ImageIcon("img/thanhToan.png"));
+		btnTimKhuyenMai.setIcon(new ImageIcon("img/find16.png"));
+		btnTimNCC.setIcon(new ImageIcon("img/find16.png"));
+		btnTimSP.setIcon(new ImageIcon("img/find16.png"));
+		btnTimSP_N.setIcon(new ImageIcon("img/find16.png"));
+		btnTimKhachHang.setIcon(new ImageIcon("img/find16.png"));
+		
+		// add event
+		btnXoaSP.addActionListener(this);
+		btnLayInTam.addActionListener(this);
+		btnTamIn.addActionListener(this);
+		btnThanhToan.addActionListener(this);
+		btnThanhToan_N.addActionListener(this);
+		btnThemSP.addActionListener(this);
+		btnThemSP_N.addActionListener(this);
+		btnXoaSP.addActionListener(this);
+		btnXoaSP_N.addActionListener(this);
+		btnTaoMoi.addActionListener(this);
+		btnTaoMoi_N.addActionListener(this);
+		btnTimKhuyenMai.addActionListener(this);
+		btnTimNCC.addActionListener(this);
+		btnTimSP.addActionListener(this);
+		btnTimSP_N.addActionListener(this);
+		btnTimKhachHang.addActionListener(this);
+		
+		//txtMaSP.getDocument().addDocumentListener(this);
+		//txtMaSP_N.getDocument().addDocumentListener(this);
+		//txtSDTKhachHang.getDocument().addDocumentListener(this);
+		//txtSDTNCC.getDocument().addDocumentListener(this);
+		//txtMaKM.getDocument().addDocumentListener(this);
+		
+		
+	}
+	
+	// tìm số điện thoại nhà cung cấp theo số điện thoại
+	public void timTheoSDTNCC() {
+		String sdt = txtSDTNCC.getText();
+		if (sdt.isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Vui lòng nhập số điện thoại");	
+				
+		} 
+		else {
+			ArrayList<NhaCungCap> ds = dao_NCC.getNCCTheoSDT(sdt);
+				if (ds.size()==0) {
+					JOptionPane.showMessageDialog(this, "Không tìm thấy mã khuyến mãi");
+				}
+				else {
+					for (NhaCungCap t : ds) {
+						txtMaNCC.setText(t.getMaNhaCungCap());
+						txtDiaChiNCC.setText(t.getDiaChi());
+						txtTenNCC.setText(t.getTenNhaCungCap());
+					}
+				}
+					
+		}
+	}
+	
+	//tìm kiếm khuyến mãi theo mã khuyến mãi
+	public void timKMTheoMaKM() {
+		String ma = txtMaKM.getText();
+		if (ma.isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Vui lòng nhập mã khuyến mãi");	
+				
+		} 
+		else {
+			ArrayList<KhuyenMai> ds = dao_KhuyenMai.getKhuyenMaiTheoMaMang(ma);
+				if (ds.size()==0) {
+					JOptionPane.showMessageDialog(this, "Không tìm thấy mã khuyến mãi");
+				}
+				else {
+					for (KhuyenMai t : ds) {
+						dcrNgayBDKM.setDate(t.getNgayBatDau());
+						dcrNgayKTKM.setDate(t.getNgayBatDau());
+						txtGiaTriGG.setText(String.valueOf(t.getGiaTriGiamGia()));
+					}
+				}
+					
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		Object o = arg0.getSource();
+		if(o.equals(btnTimKhuyenMai)) {
+			timKMTheoMaKM();
+		}
+		else if(o.equals(btnTimNCC)) {
+			timTheoSDTNCC();
+		}
+		
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		//timTheoSDTNCC();
+		//timKMTheoMaKM();
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		//timTheoSDTNCC();
+		//timKMTheoMaKM();
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		//timTheoSDTNCC();
+		//timKMTheoMaKM();
+		
 	}
 }

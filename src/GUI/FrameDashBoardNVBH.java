@@ -21,7 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.SystemColor;
 
-public class FrameDashBoard extends JFrame {
+public class FrameDashBoardNVBH extends JFrame {
 
 	/**
 	 * 
@@ -31,13 +31,9 @@ public class FrameDashBoard extends JFrame {
 	private JPanel contentPane;
 	
 	private pnlHoadon pnlHoaDon;
-	private pnlNhanVien pnlNhanvien;
 	private pnlKhachHang pnlKhachhang;
 	private pnlSanPham pnlSanPham;
-	private pnlQLThongKe pnlThongKe;
 	private pnlTroGiup pnlHelp;
-	private pnlNhaCungCap pnlNCC;
-	private pnlKhuyenMai pnlKhuyenMai;
 	private JTextField txtTenNV_DN;
 	private pnlManHinhChinh pnlManHinhChinh;
 	
@@ -66,7 +62,7 @@ public class FrameDashBoard extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FrameDashBoard(TaiKhoan tk) {
+	public FrameDashBoardNVBH(TaiKhoan tk) {
 		taiKhoanLogin = tk;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1500, 800);
@@ -83,11 +79,7 @@ public class FrameDashBoard extends JFrame {
 		pnlHoaDon.setBounds(0, 0, 1166, 763);
 		pnlKhachhang = new pnlKhachHang();
 		pnlSanPham = new pnlSanPham();
-		pnlNhanvien = new pnlNhanVien();
-		pnlThongKe = new pnlQLThongKe();
 		pnlHelp = new pnlTroGiup();
-		pnlNCC = new pnlNhaCungCap();
-		pnlKhuyenMai = new pnlKhuyenMai();
 		pnlManHinhChinh = new pnlManHinhChinh();
 		
 
@@ -158,31 +150,6 @@ public class FrameDashBoard extends JFrame {
 		Image img_iconCustomer = new ImageIcon(this.getClass().getResource("/icon_customers_s.png")).getImage();
 		lblIcon_customers.setIcon(new ImageIcon(img_iconCustomer));
 
-		// menu employee
-		JPanel pnlQLNhanVien = new JPanel();
-		pnlQLNhanVien.addMouseListener(new PanelbtnMouseAdapter(pnlQLNhanVien) {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				menuClicked(pnlNhanvien);
-			}
-		});
-		pnlQLNhanVien.setBackground(new Color(230, 230, 250));
-		pnlQLNhanVien.setBounds(10, 275, 300, 60);
-		pnlMenu.add(pnlQLNhanVien);
-		pnlQLNhanVien.setLayout(null);
-
-		JLabel lblEmployee = new JLabel("Quản lý nhân viên");
-		lblEmployee.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEmployee.setFont(new Font("Arial", Font.BOLD, 20));
-		lblEmployee.setBounds(80, 5, 200, 50);
-		pnlQLNhanVien.add(lblEmployee);
-
-		JLabel lblIconEmployee = new JLabel("");
-		lblIconEmployee.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIconEmployee.setBounds(10, 5, 50, 50);
-		pnlQLNhanVien.add(lblIconEmployee);
-		Image img_iconEmployee = new ImageIcon(this.getClass().getResource("/icon_employee_s.png")).getImage();
-		lblIconEmployee.setIcon(new ImageIcon(img_iconEmployee));
 
 		// menu product
 		JPanel pnlQLSanPham = new JPanel();
@@ -193,7 +160,7 @@ public class FrameDashBoard extends JFrame {
 			}
 		});
 		pnlQLSanPham.setBackground(new Color(230, 230, 250));
-		pnlQLSanPham.setBounds(10, 340, 300, 60);
+		pnlQLSanPham.setBounds(10, 280, 300, 60);
 		pnlMenu.add(pnlQLSanPham);
 		pnlQLSanPham.setLayout(null);
 
@@ -210,31 +177,6 @@ public class FrameDashBoard extends JFrame {
 		Image img_iconProduct = new ImageIcon(this.getClass().getResource("/icon_book_s.png")).getImage();
 		lblIconProduct.setIcon(new ImageIcon(img_iconProduct));
 
-		// menu Thongke
-		JPanel pnlQLThongKe = new JPanel();
-		pnlQLThongKe.addMouseListener(new PanelbtnMouseAdapter(pnlQLThongKe) {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				menuClicked(pnlThongKe);
-			}
-		});
-		pnlQLThongKe.setBackground(new Color(230, 230, 250));
-		pnlQLThongKe.setBounds(10, 535, 300, 60);
-		pnlMenu.add(pnlQLThongKe);
-		pnlQLThongKe.setLayout(null);
-
-		JLabel lblThongKe = new JLabel("Thống kê");
-		lblThongKe.setHorizontalAlignment(SwingConstants.CENTER);
-		lblThongKe.setBounds(91, 5, 133, 50);
-		pnlQLThongKe.add(lblThongKe);
-		lblThongKe.setFont(new Font("Arial", Font.BOLD, 20));
-
-		JLabel lblIconThongKe = new JLabel("");
-		lblIconThongKe.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIconThongKe.setBounds(10, 5, 50, 50);
-		pnlQLThongKe.add(lblIconThongKe);
-		Image img_iconThongke = new ImageIcon(this.getClass().getResource("/icon_thongke_s.png")).getImage();
-		lblIconThongKe.setIcon(new ImageIcon(img_iconThongke));
 
 		// menu help
 		JPanel pnlQLHelp = new JPanel();
@@ -246,7 +188,7 @@ public class FrameDashBoard extends JFrame {
 		});
 		pnlQLHelp.setLayout(null);
 		pnlQLHelp.setBackground(new Color(230, 230, 250));
-		pnlQLHelp.setBounds(10, 600, 300, 60);
+		pnlQLHelp.setBounds(10, 350, 300, 60);
 		pnlMenu.add(pnlQLHelp);
 
 		JLabel lblHelp = new JLabel("Trợ giúp");
@@ -281,56 +223,6 @@ public class FrameDashBoard extends JFrame {
 		Image img_iconHome = new ImageIcon(this.getClass().getResource("/iconHome_s.png")).getImage();
 		lblIconHome.setIcon(new ImageIcon(img_iconHome));
 		
-		JPanel pnlQLKhuyenMai = new JPanel();
-		pnlQLKhuyenMai.setLayout(null);
-		pnlQLKhuyenMai.setBackground(new Color(230, 230, 250));
-		pnlQLKhuyenMai.setBounds(10, 470, 300, 60);
-		pnlMenu.add(pnlQLKhuyenMai);
-		
-		JLabel lblKhuyenMai = new JLabel("Quản lý khuyến mãi");
-		lblKhuyenMai.setHorizontalAlignment(SwingConstants.CENTER);
-		lblKhuyenMai.setFont(new Font("Arial", Font.BOLD, 20));
-		lblKhuyenMai.setBounds(80, 5, 210, 50);
-		pnlQLKhuyenMai.add(lblKhuyenMai);
-		
-		JLabel lblIconKhuyenMai = new JLabel("");
-		lblIconKhuyenMai.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIconKhuyenMai.setBounds(10, 5, 50, 50);
-		pnlQLKhuyenMai.add(lblIconKhuyenMai);
-		Image img_iconSale = new ImageIcon(this.getClass().getResource("/icon_sale.png")).getImage();
-		lblIconKhuyenMai.setIcon(new ImageIcon(img_iconSale));
-		pnlQLKhuyenMai.addMouseListener(new PanelbtnMouseAdapter(pnlQLKhuyenMai) {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				menuClicked(pnlKhuyenMai);
-			}
-		});
-		
-		JPanel pnlQLNCC = new JPanel();
-		pnlQLNCC.setLayout(null);
-		pnlQLNCC.setBackground(new Color(230, 230, 250));
-		pnlQLNCC.setBounds(10, 405, 300, 60);
-		pnlMenu.add(pnlQLNCC);
-		
-		JLabel lblIconNCC = new JLabel("");
-		lblIconNCC.setHorizontalAlignment(SwingConstants.CENTER);
-		lblIconNCC.setBounds(10, 5, 50, 50);
-		pnlQLNCC.add(lblIconNCC);
-		
-		Image img_iconNCC = new ImageIcon(this.getClass().getResource("/icon_workshop.png")).getImage();
-		lblIconNCC.setIcon(new ImageIcon(img_iconNCC));
-		pnlQLNCC.addMouseListener(new PanelbtnMouseAdapter(pnlQLNCC) {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				menuClicked(pnlNCC);
-			}
-		});
-		
-		JLabel lblNhaCC = new JLabel("Quản lý nhà cung cấp");
-		lblNhaCC.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNhaCC.setFont(new Font("Arial", Font.BOLD, 20));
-		lblNhaCC.setBounds(80, 5, 210, 50);
-		pnlQLNCC.add(lblNhaCC);
 		
 //		Check nhân viên login
 		Dao_NhanVien nhanVien_dao = new Dao_NhanVien();
@@ -401,11 +293,7 @@ public class FrameDashBoard extends JFrame {
 				pnlHome.setBackground(ClickColor);
 				pnlQLHoaDon.setBackground(DefaultColor);
 				pnlQLKhachHang.setBackground(DefaultColor);
-				pnlQLNhanVien.setBackground(DefaultColor);
 				pnlQLSanPham.setBackground(DefaultColor);
-				pnlQLKhuyenMai.setBackground(DefaultColor);
-				pnlQLNCC.setBackground(DefaultColor);
-				pnlQLThongKe.setBackground(DefaultColor);
 				pnlQLHelp.setBackground(DefaultColor);
 			}
 			
@@ -423,11 +311,7 @@ public class FrameDashBoard extends JFrame {
 				pnlHome.setBackground(DefaultColor);
 				pnlQLHoaDon.setBackground(ClickColor);
 				pnlQLKhachHang.setBackground(DefaultColor);
-				pnlQLNhanVien.setBackground(DefaultColor);
 				pnlQLSanPham.setBackground(DefaultColor);
-				pnlQLKhuyenMai.setBackground(DefaultColor);
-				pnlQLNCC.setBackground(DefaultColor);
-				pnlQLThongKe.setBackground(DefaultColor);
 				pnlQLHelp.setBackground(DefaultColor);
 			}
 		});
@@ -438,29 +322,11 @@ public class FrameDashBoard extends JFrame {
 				pnlHome.setBackground(DefaultColor);
 				pnlQLHoaDon.setBackground(DefaultColor);
 				pnlQLKhachHang.setBackground(ClickColor);
-				pnlQLNhanVien.setBackground(DefaultColor);
 				pnlQLSanPham.setBackground(DefaultColor);
-				pnlQLKhuyenMai.setBackground(DefaultColor);
-				pnlQLNCC.setBackground(DefaultColor);
-				pnlQLThongKe.setBackground(DefaultColor);
 				pnlQLHelp.setBackground(DefaultColor);
 			}
 		});
 		
-		pnlQLNhanVien.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				pnlHome.setBackground(DefaultColor);
-				pnlQLHoaDon.setBackground(DefaultColor);
-				pnlQLKhachHang.setBackground(DefaultColor);
-				pnlQLNhanVien.setBackground(ClickColor);
-				pnlQLSanPham.setBackground(DefaultColor);
-				pnlQLKhuyenMai.setBackground(DefaultColor);
-				pnlQLNCC.setBackground(DefaultColor);
-				pnlQLThongKe.setBackground(DefaultColor);
-				pnlQLHelp.setBackground(DefaultColor);
-			}
-		});
 		
 		pnlQLSanPham.addMouseListener(new MouseAdapter() {
 			@Override
@@ -468,58 +334,12 @@ public class FrameDashBoard extends JFrame {
 				pnlHome.setBackground(DefaultColor);
 				pnlQLHoaDon.setBackground(DefaultColor);
 				pnlQLKhachHang.setBackground(DefaultColor);
-				pnlQLNhanVien.setBackground(DefaultColor);
 				pnlQLSanPham.setBackground(ClickColor);
-				pnlQLKhuyenMai.setBackground(DefaultColor);
-				pnlQLNCC.setBackground(DefaultColor);
-				pnlQLThongKe.setBackground(DefaultColor);
 				pnlQLHelp.setBackground(DefaultColor);
 			}
 		});
 		
-		pnlQLKhuyenMai.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				pnlHome.setBackground(DefaultColor);
-				pnlQLHoaDon.setBackground(DefaultColor);
-				pnlQLKhachHang.setBackground(DefaultColor);
-				pnlQLNhanVien.setBackground(DefaultColor);
-				pnlQLSanPham.setBackground(DefaultColor);
-				pnlQLKhuyenMai.setBackground(ClickColor);
-				pnlQLNCC.setBackground(DefaultColor);
-				pnlQLThongKe.setBackground(DefaultColor);
-				pnlQLHelp.setBackground(DefaultColor);
-			}
-		});
 		
-		pnlQLNCC.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				pnlHome.setBackground(DefaultColor);
-				pnlQLHoaDon.setBackground(DefaultColor);
-				pnlQLKhachHang.setBackground(DefaultColor);
-				pnlQLNhanVien.setBackground(DefaultColor);
-				pnlQLSanPham.setBackground(DefaultColor);
-				pnlQLKhuyenMai.setBackground(DefaultColor);
-				pnlQLNCC.setBackground(ClickColor);
-				pnlQLThongKe.setBackground(DefaultColor);
-				pnlQLHelp.setBackground(DefaultColor);
-			}
-		});
-		pnlQLThongKe.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				pnlHome.setBackground(DefaultColor);
-				pnlQLHoaDon.setBackground(DefaultColor);
-				pnlQLKhachHang.setBackground(DefaultColor);
-				pnlQLNhanVien.setBackground(DefaultColor);
-				pnlQLSanPham.setBackground(DefaultColor);
-				pnlQLKhuyenMai.setBackground(DefaultColor);
-				pnlQLNCC.setBackground(DefaultColor);
-				pnlQLThongKe.setBackground(ClickColor);
-				pnlQLHelp.setBackground(DefaultColor);
-			}
-		});
 		
 		pnlQLHelp.addMouseListener(new MouseAdapter() {
 			@Override
@@ -527,11 +347,7 @@ public class FrameDashBoard extends JFrame {
 				pnlHome.setBackground(DefaultColor);
 				pnlQLHoaDon.setBackground(DefaultColor);
 				pnlQLKhachHang.setBackground(DefaultColor);
-				pnlQLNhanVien.setBackground(DefaultColor);
 				pnlQLSanPham.setBackground(DefaultColor);
-				pnlQLKhuyenMai.setBackground(DefaultColor);
-				pnlQLNCC.setBackground(DefaultColor);
-				pnlQLThongKe.setBackground(DefaultColor);
 				pnlQLHelp.setBackground(ClickColor);
 			}
 		});
@@ -566,12 +382,8 @@ public class FrameDashBoard extends JFrame {
 //		
 		pnlMainContent.add(pnlHoaDon);
 		pnlMainContent.add(pnlKhachhang);
-		pnlMainContent.add(pnlNhanvien);
 		pnlMainContent.add(pnlSanPham);
-		pnlMainContent.add(pnlThongKe);
 		pnlMainContent.add(pnlHelp);
-		pnlMainContent.add(pnlNCC);
-		pnlMainContent.add(pnlKhuyenMai);
 		pnlMainContent.add(pnlManHinhChinh);
 		
 
@@ -584,12 +396,8 @@ public class FrameDashBoard extends JFrame {
 	public void menuClicked(JPanel panel) {
 		pnlHoaDon.setVisible(false);
 		pnlKhachhang.setVisible(false);
-		pnlNhanvien.setVisible(false);
 		pnlSanPham.setVisible(false);
-		pnlThongKe.setVisible(false);
 		pnlHelp.setVisible(false);
-		pnlKhuyenMai.setVisible(false);
-		pnlNCC.setVisible(false);
 		pnlManHinhChinh.setVisible(false);
 		
 		panel.setVisible(true);
